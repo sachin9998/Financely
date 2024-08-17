@@ -6,18 +6,11 @@ import Signup from "./pages/Signup";
 const App = () => {
   return (
     <Router>
-      
-      <div>
-        <Header />
+      <Routes>
+        <Route path="/" element={<Signup />} />
 
-        <Routes>
-          <Route path="/" element={<Signup />} />
-
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-
-      </div>
-      
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </Router>
   );
 };

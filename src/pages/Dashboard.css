@@ -1,0 +1,99 @@
+.dashboard-container {
+  /* margin: auto; */
+}
+
+.dashboard {
+  max-width: 1280px;
+  margin: auto;
+}
+
+.dashboard h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 500;
+}
+
+.cash {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.card-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+  /* flex-wrap: wrap; */
+}
+
+.card {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  gap: 1rem;
+  padding: 2rem;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 8px;
+}
+
+.visuals {
+  margin-top: 2rem;
+
+  height: 500px;
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+}
+
+.graph-container {
+  width: 60%;
+  /* border: 1px solid black; */
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.piechart-container {
+  width: 35%;
+  /* border: 1px solid black; */
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+/* Transaction Container */
+.transactions-container {
+  margin-top: 2rem;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-header {
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+.transaction-btns {
+  display: flex;
+  gap: 1rem;
+  width: 400px;
+}
+
+table {
+  padding: 2rem;
+}
+
+/* table {
+  display: flex;
+} */
