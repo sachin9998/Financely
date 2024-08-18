@@ -1,9 +1,11 @@
-const Card = () => {
+const Card = ({ title }) => {
   return (
-    <div className="card">
-      <h2>Current Balance</h2>
-      <p className="cash">₹55000</p>
-      <button className="btn btn-secondary">Reset Balance</button>
+    <div className="w-[380px] p-6 box-shadow rounded">
+      <h2 className="text-xl font-medium tracking-wide">{title}</h2>
+      <p className="py-3 text-sm tracking-widest">₹55000</p>
+      <button className="bg-[var(--theme)] text-white py-[8px] w-full rounded font-light text-sm outline-none">
+        Reset Balance
+      </button>
     </div>
   );
 };
