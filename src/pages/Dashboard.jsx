@@ -1,28 +1,32 @@
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Header from "../components/Header/Header.jsx";
-import Card from "../components/Modal/Card.jsx";
-import Graph from "../components/Modal/Graph.jsx";
-import PieChart from "../components/Modal/PieChart.jsx";
-import "./Dashboard.css";
+import Card from "../components/Card/Card.jsx";
+import Graph from "../components/Graph/Graph.jsx";
+import PieChart from "../components/PieChart/PieChart.jsx";
 
 const Dashboard = () => {
+
+
+
+  
   return (
     <div className="w-full bg-[var(background-color)]">
-      <Header />
+      {/* <Header/> */}
 
-      <div className="max-w-screen-xl h-auto mx-auto">
-        <div className="card-container">
-          <Card title={"Current Balance"} />
-          <Card title={"Total Income"} />
-          <Card title={"Total Expenses"} />
+      <div className="max-w-screen-xl mx-auto">
+        {/* Cards Container */}
+        <div className="flex justify-between my-10 flex-wrap">
+          <Card title={"Current Balance"} btnText={"Reset Balance"} />
+          <Card title={"Total Income"} btnText={"Add Income"} />
+          <Card title={"Total Expenses"} btnText={"Add Expense"} />
         </div>
 
-        <div className="visuals">
-          <div className="graph-container">
+        <div className="my-12 w-full h-[500px] flex gap-[5%]">
+          <div className="box-shadow rounded-sm w-[60%]">
             <Graph />
           </div>
-          <div className="piechart-container">
+
+          <div className="box-shadow rounded-sm w-[35%]">
             <PieChart />
           </div>
         </div>
@@ -137,7 +141,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

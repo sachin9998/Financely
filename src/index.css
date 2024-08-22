@@ -25,16 +25,3 @@ input {
   font-family: "Montserrat", sans-serif;
 }
 
-.blue-text {
-  color: var(--theme);
-}
-
-.wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1280px;
-  height: 90vh;
-  margin: auto;
-}
-

@@ -7,9 +7,9 @@ import Signup from "./pages/Signup";
 const App = () => {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Signup />} />
-
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
