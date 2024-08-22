@@ -1,9 +1,8 @@
+// import "dotenv/config";
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { apiKey } from "./data";
-apiKey;
 
 const firebaseConfig = {
   apiKey: "AIzaSyBtPt6my4qgqPqBQ4jy3sLMmwIn1TTUEwQ",

@@ -1,18 +1,34 @@
+import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Card from "../components/Card/Card.jsx";
 import Graph from "../components/Graph/Graph.jsx";
+import AddIncome from "../components/Modal/AddIncome.jsx";
+import Modal from "../components/Modal/Modal.jsx";
 import PieChart from "../components/PieChart/PieChart.jsx";
 
 const Dashboard = () => {
+  const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
+  const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
 
+  const showIncomeModal = () => {
+    setIsIncomeModalVisible(true);
+  };
 
+  const showExpenseModal = () => {
+    setIsExpenseModalVisible(true);
+  };
 
-  
+  const handleIncomeModal = () => {
+    setIsIncomeModalVisible(false);
+  };
+
+  const handleExpenseCancel = () => {
+    setIsExpenseModalVisible(false);
+  };
+
   return (
     <div className="w-full bg-[var(background-color)]">
-      {/* <Header/> */}
-
       <div className="max-w-screen-xl mx-auto">
         {/* Cards Container */}
         <div className="flex justify-between my-10 flex-wrap">
@@ -20,6 +36,9 @@ const Dashboard = () => {
           <Card title={"Total Income"} btnText={"Add Income"} />
           <Card title={"Total Expenses"} btnText={"Add Expense"} />
         </div>
+
+        {/* <AddIncome /> */}
+        <Modal isOpen={true} onClose={false} />
 
         <div className="my-12 w-full h-[500px] flex gap-[5%]">
           <div className="box-shadow rounded-sm w-[60%]">
