@@ -1,16 +1,45 @@
-import { useState } from "react";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import toast from "react-hot-toast";
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import emptyTransactionCard from "../assets/transactions.svg";
 import Card from "../components/Card/Card.jsx";
 import Graph from "../components/Graph/Graph.jsx";
+import Loader from "../components/Loader/Loader";
 import Modal from "../components/Modal/Modal.jsx";
 import PieChart from "../components/PieChart/PieChart.jsx";
+import { auth, db } from "../firebase";
 
 const Dashboard = () => {
+  // const transactions = [
+  //   {
+  //     type: "income",
+  //     amount: 2200,
+  //     tag: "salary",
+  //     name: "August Salary",
+  //     date: "2024-08-23",
+  //   },
+  //   {
+  //     type: "expense",
+  //     amount: 699,
+  //     tag: "food",
+  //     name: "July Wifi Recharge",
+  //     date: "2024-08-23",
+  //   },
+  // ];
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user] = useAuthState(auth);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
+
+  const [income, setIncome] = useState(0);
+  const [expense, setExpense] = useState(0);
+  const [currentBalance, setCurrentBalance] = useState(0);
 
   const showIncomeModal = () => {
     setIsIncomeModalVisible(true);
@@ -29,25 +58,105 @@ const Dashboard = () => {
     setIsExpenseModalVisible(false);
   };
 
-  const submitValues = (values, type) => {};
+  // ===> Submitting Income Expense Entry <====
+  const submitValues = (values, type) => {
+    const newTransaction = {
+      type: type,
+      date: moment(values.date).format("YYYY-MM-DD"),
+      amount: parseFloat(values.amount),
+      tag: values.tag,
+      name: values.name,
+    };
+
+    setIsExpenseModalVisible(false);
+    setIsIncomeModalVisible(false);
+  };
+
+  async function addTransaction(transaction) {
+    try {
+      const docRef = await addDoc(
+        collection(db, `users/${user.uid}/transactions`),
+        transaction
+      );
+      console.log("Document written with OD: ", docRef.id);
+      toast.success("Transaction Added!");
+
+      let newArr = transactions;
+      newArr.push(transaction);
+      setTransactions(newArr);
+    } catch (error) {
+      console.log(error);
+      toast.error("Could not add transaction");
+    }
+  }
 
   const resetBalance = () => {};
+
+  // Fetch transactions
+  async function fetchTransactions() {
+    setLoading(true);
+    if (user) {
+      const q = query(collection(db, `users/${user.uid}/transactions`));
+      const querySnapshot = await getDocs(q);
+      let transactionsArray = [];
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        transactionsArray.push(doc.data());
+      });
+      setTransactions(transactionsArray);
+      console.log(transactionsArray);
+      toast.success("Transactions Fetched!");
+    }
+    setLoading(false);
+  }
+
+  function calculateBalance() {
+    let incomeTotal = 0;
+    let expenseTotal = 0;
+
+    transactions.forEach((transaction) => {
+      if (transaction.type === "income") {
+        incomeTotal += transaction.amount;
+      } else {
+        expenseTotal += transaction.amount;
+      }
+    });
+
+    setIncome(incomeTotal);
+    setExpense(expenseTotal);
+    setCurrentBalance(incomeTotal - expenseTotal);
+  }
+
+  // getting all firebase docs
+  useEffect(() => {}, []);
+
+  useEffect(() => {}, []);
+
+  if (loading) {
+    <Loader />;
+  }
 
   return (
     <div className="w-full bg-[var(background-color)]">
       <div className="max-w-screen-xl mx-auto">
         {/* Cards Container */}
         <div className="flex justify-between my-10 flex-wrap">
-          <Card title={"Current Balance"} btnText={"Reset Balance"} />
+          <Card
+            title={"Current Balance"}
+            balance={currentBalance}
+            btnText={"Reset Balance"}
+          />
           <Card
             title={"Total Income"}
             btnText={"Add Income"}
             openModal={showIncomeModal}
+            balance={income}
           />
           <Card
             title={"Total Expenses"}
             btnText={"Add Expense"}
             openModal={showExpenseModal}
+            balance={expense}
           />
         </div>
 
@@ -56,6 +165,7 @@ const Dashboard = () => {
           title={"Add Income"}
           isModalOpen={isIncomeModalVisible}
           closeModal={hideIncomeModal}
+          submitForm={submitValues}
         />
 
         {/* <AddIncome /> */}
