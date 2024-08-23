@@ -276,7 +276,7 @@ const Signup = () => {
                 />
               </div>
 
-              <div className="wrap-input">
+              <div className="">
                 <p>Password</p>
                 <input
                   className="outline-none py-1 border-b w-full border-gray-300"

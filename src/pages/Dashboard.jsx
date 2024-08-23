@@ -1,31 +1,37 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import emptyTransactionCard from "../assets/transactions.svg";
 import Card from "../components/Card/Card.jsx";
 import Graph from "../components/Graph/Graph.jsx";
-import AddIncome from "../components/Modal/AddIncome.jsx";
 import Modal from "../components/Modal/Modal.jsx";
 import PieChart from "../components/PieChart/PieChart.jsx";
 
 const Dashboard = () => {
-  const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
+  const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
+  const [isDataAvailable, setIsDataAvailable] = useState(false);
 
   const showIncomeModal = () => {
     setIsIncomeModalVisible(true);
+    console.log("Show income pressed");
+  };
+
+  const hideIncomeModal = () => {
+    setIsIncomeModalVisible(false);
   };
 
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
   };
 
-  const handleIncomeModal = () => {
-    setIsIncomeModalVisible(false);
-  };
-
-  const handleExpenseCancel = () => {
+  const hideExpenseModal = () => {
     setIsExpenseModalVisible(false);
   };
+
+  const submitValues = (values, type) => {};
+
+  const resetBalance = () => {};
 
   return (
     <div className="w-full bg-[var(background-color)]">
@@ -33,22 +39,49 @@ const Dashboard = () => {
         {/* Cards Container */}
         <div className="flex justify-between my-10 flex-wrap">
           <Card title={"Current Balance"} btnText={"Reset Balance"} />
-          <Card title={"Total Income"} btnText={"Add Income"} />
-          <Card title={"Total Expenses"} btnText={"Add Expense"} />
+          <Card
+            title={"Total Income"}
+            btnText={"Add Income"}
+            openModal={showIncomeModal}
+          />
+          <Card
+            title={"Total Expenses"}
+            btnText={"Add Expense"}
+            openModal={showExpenseModal}
+          />
         </div>
 
         {/* <AddIncome /> */}
-        <Modal isOpen={true} onClose={false} />
+        <Modal
+          title={"Add Income"}
+          isModalOpen={isIncomeModalVisible}
+          closeModal={hideIncomeModal}
+        />
 
-        <div className="my-12 w-full h-[500px] flex gap-[5%]">
-          <div className="box-shadow rounded-sm w-[60%]">
-            <Graph />
-          </div>
+        {/* <AddIncome /> */}
+        <Modal
+          title={"Add Expense"}
+          isModalOpen={isExpenseModalVisible}
+          closeModal={hideExpenseModal}
+          submitForm={submitValues}
+        />
 
-          <div className="box-shadow rounded-sm w-[35%]">
-            <PieChart />
+        {isDataAvailable ? (
+          <div className="my-12 w-full h-[500px] flex gap-[5%]">
+            <div className="box-shadow rounded-sm w-[60%]">
+              <Graph />
+            </div>
+
+            <div className="box-shadow rounded-sm w-[35%]">
+              <PieChart />
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex flex-col gap-10 items-center justify-between my-10">
+            <img width={300} src={emptyTransactionCard} alt="" />
+            <p>You Have No Transactions Currently</p>
+          </div>
+        )}
 
         <div className="w-full my-8 flex items-center justify-center gap-6 text-sm">
           <div className="flex-1 box-shadow flex gap-4 items-center space-between px-3 py-2 rounded-md outline-none border-none">
