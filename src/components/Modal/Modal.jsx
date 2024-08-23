@@ -1,6 +1,27 @@
+import { useEffect, useState } from "react";
 import { TfiClose } from "react-icons/tfi";
 
-const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
+const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState(0);
+  const [date, setDate] = useState(Date.now());
+  const [tag, setTag] = useState("");
+  // const type = type;
+
+  const values = {
+    type: type,
+    date: date,
+    amount: amount,
+    tag: tag,
+    name: name,
+  };
+
+  const submitForm = (e, values) => {
+    e.preventDefault();
+    console.log(values);
+    submitValues(values);
+  };
+
   if (!isModalOpen) return null;
 
   return (
@@ -21,7 +42,10 @@ const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
 
         <h2 className="pb-2 text-xl font-medium border-b">{title}</h2>
 
-        <form className="flex flex-col gap-6 mt-5 " action="">
+        <form
+          className="flex flex-col gap-6 mt-5 "
+          onSubmit={(e) => submitForm(e, values)}
+        >
           <div>
             <p className="font-medium">
               <sup className=" text-red-600"> * </sup>Name
@@ -30,8 +54,8 @@ const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
               className="outline-none py-1 border-b w-full border-black"
               type="text"
               name="name"
-              //   value={name}
-              //   onChange={(e) => setName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="Enter Details"
             />
           </div>
@@ -42,10 +66,10 @@ const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
             </p>
             <input
               className="outline-none py-1 border-b w-full border-black"
-              //   onChange={(e) => setEmail(e.target.value)}
-              //   value={email}
+              onChange={(e) => setAmount(e.target.value)}
+              value={amount}
               type="number"
-              name="email"
+              name="amount"
               placeholder="Enter Amount"
             />
           </div>
@@ -58,8 +82,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
               className="outline-none py-1 border-b w-full border-gray-300"
               type="date"
               name="name"
-              //   value={password}
-              //   onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setDate(e.target.value)}
             />
           </div>
 
@@ -67,16 +90,21 @@ const Modal = ({ title, isModalOpen, closeModal, submitForm }) => {
             <p className="font-medium">
               <sup className=" text-red-600"> * </sup>Tag
             </p>
-            <select className="py-1 w-full border-b border-black" name="" id="">
-              <option value="">Salary</option>
-              <option value="">Freelance</option>
-              <option value="">Stock Market</option>
-              <option value="">Property Rent</option>
+            <select
+              onChange={(e) => setTag(e.target.value)}
+              className="py-1 w-full border-b border-black"
+              name=""
+              id=""
+            >
+              <option value="Salary">Salary</option>
+              <option value="Freelance">Freelance</option>
+              <option value="Stock Market">Stock Market</option>
+              <option value="Property Rent">Property Rent</option>
             </select>
           </div>
 
           <button
-            onClick={submitForm}
+            type="submit"
             className="bg-[var(--theme)] text-white px-8 py-2 rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all w-full"
           >
             Add Income

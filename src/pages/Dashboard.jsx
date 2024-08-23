@@ -28,8 +28,6 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  const [isDataAvailable, setIsDataAvailable] = useState(false);
-
   // Income Modal ==>
   const showIncomeModal = () => {
     setIsIncomeModalVisible(true);
@@ -50,34 +48,40 @@ const Dashboard = () => {
   };
 
   // ===> Submitting Income Expense Entry <====
-  const submitValues = (values, type) => {
+  const submitValues = (values) => {
+    
+    console.log("Value submitted", values);
+
     const newTransaction = {
-      type: type,
+      type: values.type,
       date: moment(values.date).format("YYYY-MM-DD"),
       amount: parseFloat(values.amount),
       tag: values.tag,
       name: values.name,
     };
 
+    console.log("newTransaction", newTransaction);
+
+    setTransactions([...transactions, newTransaction]);
     setIsExpenseModalVisible(false);
     setIsIncomeModalVisible(false);
   };
 
-  async function addTransaction(transaction) {
+  async function addTransaction(transaction, many = false) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transactions`),
         transaction
       );
-      console.log("Document written with OD: ", docRef.id);
-      toast.success("Transaction Added!");
-
-      let newArr = transactions;
-      newArr.push(transaction);
-      setTransactions(newArr);
-    } catch (error) {
-      console.log(error);
-      toast.error("Could not add transaction");
+      console.log("Document written with ID: ", docRef.id);
+      if (!many) {
+        toast.success("Transaction Added!");
+      }
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      if (!many) {
+        toast.error("Couldn't add transaction");
+      }
     }
   }
 
@@ -119,7 +123,9 @@ const Dashboard = () => {
   }
 
   // getting all firebase docs
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
 
   useEffect(() => {}, []);
 
@@ -155,7 +161,8 @@ const Dashboard = () => {
             title={"Add Income"}
             isModalOpen={isIncomeModalVisible}
             closeModal={hideIncomeModal}
-            submitForm={submitValues}
+            submitValues={submitValues}
+            type={"income"}
           />
 
           {/* <AddIncome /> */}
@@ -163,7 +170,8 @@ const Dashboard = () => {
             title={"Add Expense"}
             isModalOpen={isExpenseModalVisible}
             closeModal={hideExpenseModal}
-            submitForm={submitValues}
+            submitValues={submitValues}
+            type={"expense"}
           />
 
           {transactions.length === 0 ? (
