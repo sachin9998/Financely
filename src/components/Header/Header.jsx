@@ -8,6 +8,7 @@ import { auth } from "../../firebase";
 const Header = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const profilePictureURL = user?.photoURL;
 
   const logout = () => {
     auth.signOut();
@@ -30,6 +31,14 @@ const Header = () => {
 
         <div>
           <p>Financely.</p>
+
+          {/* <img
+            className="rounded-full"
+            src={profilePictureURL || userIcon}
+            alt="Profile Picture"
+            width={32}
+
+          /> */}
         </div>
 
         {/* Links */}
@@ -39,7 +48,7 @@ const Header = () => {
 
             <img
               className="rounded-full"
-              src={user.photoURL ? user.photoURL : userIcon}
+              src={profilePictureURL || userIcon}
               alt="Profile Picture"
               width={32}
             />

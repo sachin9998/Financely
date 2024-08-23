@@ -1,5 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TfiClose } from "react-icons/tfi";
+
+const incomeTags = [
+  "Salary",
+  "Freelance",
+  "Investment",
+  "Rental Income",
+  "Other Income",
+];
+
+const expenseTags = [
+  "Rent",
+  "Food",
+  "Bills",
+  "Miscellaneous",
+];
 
 const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
   const [name, setName] = useState("");
@@ -96,10 +111,22 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
               name=""
               id=""
             >
-              <option value="Salary">Salary</option>
-              <option value="Freelance">Freelance</option>
-              <option value="Stock Market">Stock Market</option>
-              <option value="Property Rent">Property Rent</option>
+              {type === "income"
+                ? incomeTags.map((item, idx) => {
+                    return (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    );
+                  })
+                : expenseTags.map((item, idx) => {
+                    return (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    );
+                  })}
+
             </select>
           </div>
 

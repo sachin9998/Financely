@@ -1,10 +1,8 @@
 import {
   createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -21,7 +19,12 @@ const getErrorMessage = (error) => {
       return "The email address is invalid. Please check and try again.";
     case "auth/weak-password":
       return "The password is too weak. Please use a stronger password.";
-    // Add more cases as needed
+    case "auth/user-not-found":
+      return "The user does not exist. Please check the email or sign up.";
+    case "auth/wrong-password":
+      return "Incorrect password. Please try again.";
+    case "auth/invalid-credential":
+      return "The credentials provided are invalid.";
     default:
       return "An unexpected error occurred. Please try again.";
   }
@@ -29,7 +32,6 @@ const getErrorMessage = (error) => {
 
 const Signup = () => {
   const [loginForm, setLoginForm] = useState(false);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +39,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
 
   const loginWithEmail = (event) => {
     event.preventDefault();
@@ -67,27 +70,13 @@ const Signup = () => {
         loading: "Logging In...",
         success: <b>Logged In Successfully!</b>,
         error: (error) => {
+          console.error("Firebase Error:", error);
           setLoading(false);
           return <b>{getErrorMessage(error)}</b>;
         },
       }
     );
 
-    // signInWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     // Signed in
-    //     const user = userCredential.user;
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //   });
-
-    console.log("This is email", email);
-    console.log("This is password", password);
-
-    // toast.success("Logged in Sucessfully!");
     setLoading(false);
   };
 
@@ -109,149 +98,87 @@ const Signup = () => {
         return;
       }
 
-      // toast.loading("Creating user");
-
-      // toast.promise(
-      //   createUserWithEmailAndPassword(auth, email, password)
-      //     .then((userCredential) => {
-      //       // Signed up
-      //       const user = userCredential.user;
-      //       console.log("User ::", user);
-      //       // ...
-      //     })
-      //     .catch((error) => {
-      //       const errorCode = error.code;
-      //       const errorMessage = error.message;
-      //       console.log(errorCode);
-      //       console.log(errorMessage);
-      //       toast.error(errorMessage);
-      //     }),
-      //   {
-      //     loading: "Creating User...",
-      //     success: <b>User Created Successfully!</b>,
-      //     error: <b>Something Went Wrong!</b>,
-      //   }
-      // );
-
       toast.promise(
         createUserWithEmailAndPassword(auth, email, password).then(
           (userCredential) => {
             const user = userCredential.user;
-            // await createUserDocument(user);
-            console.log("User ::", user);
+            createUserDocument(user);
 
+            console.log("User ::", user);
             setLoading(false);
             setName("");
             setPassword("");
-            // setEmail("");
             setConfirmPassword("");
             setLoginForm(true);
-            createDoc(user);
-            toast.success("Document Created");
+            navigate("/dashboard");
+            // toast.success("Document Created");
           }
         ),
         {
           loading: "Creating User...",
-          success: <b>User Created Successfully!</b>,
+          success: <b>Successfully Signed Up!</b>,
           error: (error) => {
             setLoading(false);
             return <b>{getErrorMessage(error)}</b>;
           },
         }
       );
-
-      // createUserWithEmailAndPassword(auth, email, password)
-      //   .then((userCredential) => {
-      //     // Signed up
-      //     const user = userCredential.user;
-      //     console.log("User ::", user);
-      //     toast.success("User Created");
-      //     // ...
-      //   })
-      //   .catch((error) => {
-      //     const errorCode = error.code;
-      //     const errorMessage = error.message;
-      //     console.log(errorCode);
-      //     console.log(errorMessage);
-      //     toast.error("Error");
-      //   });
     } else {
       setLoading(false);
       toast.error("All Fields are Mandatory");
     }
   };
 
-  // console.log(import.meta.env.VITE_API_KEY);
-
-  async function createDoc(user) {
-    // Make sure doc with userid does not exist
-    // create a doc
+  const createUserDocument = async (user) => {
     setLoading(true);
 
+    // Make sure doc with userid does not exist
     if (!user) return;
 
     const userRef = doc(db, "users", user.uid);
     const userData = await getDoc(userRef);
 
     if (!userData.exists()) {
+      const { displayName, email, photoURL } = user;
+      const createdAt = new Date();
+
       try {
-        await setDoc(doc(db, "users", "user.uid"), {
-          name: user.displayName ? user.displayName : name,
-          email: user.email,
-          photoURL: user.photoURL ? user.photoURL : "",
-          createdAt: new Date(),
+        await setDoc(userRef, {
+          name: displayName ? displayName : name,
+          email,
+          photoURL: photoURL ? photoURL : "",
+          createdAt,
         });
 
-        toast.success("Account Created!");
+        // toast.success("Account Created!");
         setLoading(false);
       } catch (error) {
         toast.error(error.message);
         console.log("Error Creating user Document", error);
         setLoading(false);
       }
-    } else {
-      toast.error("Doc already exists");
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     setLoading(true);
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      await createDoc(user);
+      await createUserDocument(user);
       toast.success("Logged In Successfully!");
       setLoading(false);
       navigate("/dashboard");
     } catch (error) {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
 
-      // (error) => {
-      //   setLoading(false);
-      //   return <b>{getErrorMessage(error)}</b>;
-      // };
       setLoading(false);
       toast.error(getErrorMessage(error));
-      // // The email of the user's account used.
-      // const email = error.customData.email;
-      // // The AuthCredential type that was used.
-      // const credential = GoogleAuthProvider.credentialFromError(error);
-      // // ...
     }
-    setLoading(false);
-    // then((result) => {
-    //   // This gives you a Google Access Token. You can use it to access the Google API.
-    //   const credential = GoogleAuthProvider.credentialFromResult(result);
-    //   const token = credential.accessToken;
-    //   // The signed-in user info.
-    //   const user = result.user;
-    //   console.log("User >>>", user);
 
-    //   // IdP data available using getAdditionalUserInfo(result)
-    //   // ...
-    // })
+    setLoading(false);
   };
 
   return (
@@ -326,7 +253,7 @@ const Signup = () => {
               Sign Up on <span className="text-[var(--theme)]">Financely.</span>
             </h2>
 
-            <form className="flex flex-col gap-4 mt-3 " action="">
+            <div className="flex flex-col gap-4 mt-3 " action="">
               <div>
                 <p>Full Name</p>
                 <input
@@ -385,7 +312,7 @@ const Signup = () => {
                   ? "Creating User..."
                   : "Signup With Email and Password"}
               </button>
-            </form>
+            </div>
 
             <p className="text-center my-2 text-sm">Or</p>
 

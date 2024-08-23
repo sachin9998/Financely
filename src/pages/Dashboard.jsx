@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { FiSearch } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-
 import Card from "../components/Card/Card.jsx";
 import Graph from "../components/Graph/Graph.jsx";
 import Loader from "../components/Loader/Loader";
@@ -25,6 +24,8 @@ const Dashboard = () => {
   const [income, setIncome] = useState(0);
   const [expense, setExpense] = useState(0);
   const [currentBalance, setCurrentBalance] = useState(0);
+
+  console.log("Current Transactions", transactions);
 
   const navigate = useNavigate();
 
@@ -49,7 +50,6 @@ const Dashboard = () => {
 
   // ===> Submitting Income Expense Entry <====
   const submitValues = (values) => {
-    
     console.log("Value submitted", values);
 
     const newTransaction = {
@@ -65,27 +65,32 @@ const Dashboard = () => {
     setTransactions([...transactions, newTransaction]);
     setIsExpenseModalVisible(false);
     setIsIncomeModalVisible(false);
+    addTransaction(newTransaction);
+    calculateBalance();
   };
 
+  // Adding transaction to database
   async function addTransaction(transaction, many = false) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transactions`),
         transaction
       );
+
       console.log("Document written with ID: ", docRef.id);
+
       if (!many) {
         toast.success("Transaction Added!");
       }
+
     } catch (e) {
       console.error("Error adding document: ", e);
+      
       if (!many) {
         toast.error("Couldn't add transaction");
       }
     }
   }
-
-  const resetBalance = () => {};
 
   // Fetch transactions
   async function fetchTransactions() {
@@ -95,7 +100,6 @@ const Dashboard = () => {
       const querySnapshot = await getDocs(q);
       let transactionsArray = [];
       querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
         transactionsArray.push(doc.data());
       });
       setTransactions(transactionsArray);
@@ -122,12 +126,17 @@ const Dashboard = () => {
     setCurrentBalance(incomeTotal - expenseTotal);
   }
 
+  // Calculate the initial balance, income, and expenses
+  useEffect(() => {
+    calculateBalance();
+  }, [transactions]);
+
+  const resetBalance = () => {};
+
   // getting all firebase docs
   useEffect(() => {
     fetchTransactions();
   }, []);
-
-  useEffect(() => {}, []);
 
   if (loading) {
     return <Loader />;
