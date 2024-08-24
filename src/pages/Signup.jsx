@@ -10,6 +10,7 @@ import { FaGoogle } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { auth, db, provider } from "../firebase";
+import Footer from "../components/Footer/Footer";
 
 const getErrorMessage = (error) => {
   switch (error.code) {

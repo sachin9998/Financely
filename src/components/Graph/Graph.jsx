@@ -1,5 +1,9 @@
 const Graph = () => {
-  return <div>Graph</div>;
+  return (
+    <div>
+      {/* <Line {...{ ...balanceConfig, data: balanceData }} /> */}
+    </div>
+  );
 };
 
 export default Graph;

@@ -1,19 +1,23 @@
+import { unparse } from "papaparse";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+// const [query, setQuery] =useState("");
 
-const Table = ({ transactions }) => {
+const Table = ({ transactions, importFromCSV }) => {
   const [data, setData] = useState(transactions);
   const [search, setSearch] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  //   const [sortOption, setSortOption] = useState("");
   const [selectedButton, setSelectedButton] = useState("button1");
 
   console.log(transactions);
 
   const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
+    // const query = e.target.value.toLowerCase();
+    const q = e.target.value;
+    setSearch(q);
 
-    setSearch(query);
+    const query = q.toLowerCase();
 
     // const searchData = data.filter((item) =>
     //   item.name.toLowerCase().includes(query)
@@ -73,7 +77,22 @@ const Table = ({ transactions }) => {
     cursor: "pointer",
   });
 
-  useEffect(() => {}, [data, sortOption]);
+  const exportToCSV = () => {
+    var csv = unparse(transactions, {
+      fields: ["name", "type", "date", "amount", "tag"],
+    });
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "transactions.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  useEffect(() => {}, [data, search]);
 
   return (
     <>
@@ -102,48 +121,35 @@ const Table = ({ transactions }) => {
           >
             Sort by Amount
           </button>
-
-          {/* <label className="inline-block border p-2  radio-button ">
-            <input
-              className=""
-              type="radio"
-              name="sortOption"
-              value=""
-              //   checked={sortOption === "noSort"}
-              onChange={handleSort}
-            />
-            <span>No Sort</span>
-          </label>
-          <label className="inline-block radio-button">
-            <input
-              type="radio"
-              name="sortOption"
-              value="date"
-              //   checked={sortOption === "date"}
-              onChange={handleSort}
-            />
-            <span>Sort By Date</span>
-          </label>
-          <label className="inline-block radio-button">
-            <input
-              type="radio"
-              name="sortOption"
-              value="amount"
-              //   checked={sortOption === "amount"}
-              onChange={handleSort}
-            />
-            <span>Sort By Amount</span>
-          </label> */}
         </div>
 
         <div className="flex justify-center items-center gap-4">
-          <button className="border border-[var(--theme)] text-[var(--theme)] px-8 py-2 rounded hover:bg-[var(--theme)] hover:text-white hover:border-none transition-all">
+          <button
+            onClick={exportToCSV}
+            className="border border-[var(--theme)] text-[var(--theme)] px-8 py-2 rounded hover:bg-[var(--theme)] hover:text-white hover:border transition-all"
+          >
             Export to CSV
           </button>
 
-          <button className="bg-[var(--theme)] text-white px-8 py-2 rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all">
-            Import to CSV
-          </button>
+          {/* <button
+            onClick={importFromCSV}
+            className="bg-[var(--theme)] text-white px-8 py-2 rounded border border-transparent hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all"
+          ></button> */}
+
+          <label
+            htmlFor="file-csv"
+            className="inline-flex border border-[var(--theme)] text-white bg-[var(--theme)] px-8 py-2 rounded hover:text-[var(--theme)] hover:bg-white transition-all"
+          >
+            Import from CSV
+          </label>
+          <input
+            className=" hidden"
+            type="file"
+            id="file-csv"
+            accept=".csv"
+            required
+            onChange={importFromCSV}
+          />
         </div>
       </div>
 
@@ -181,6 +187,14 @@ const Table = ({ transactions }) => {
         </thead>
 
         <tbody className="t text-gray-700">
+          {data.length === 0 && (
+            <tr className="border">
+              <td className="text-center font-medium" colSpan={5}>
+                No Transactions Found
+              </td>
+            </tr>
+          )}
+
           {data.map((item, index) => {
             return (
               <tr key={Date.now() + index} className="border-b">
@@ -195,7 +209,8 @@ const Table = ({ transactions }) => {
         </tbody>
       </table>
 
-      <div className="mt-5 flex justify-end gap-2">
+      {/* For Future use: Pagination */}
+      {/* <div className="mt-5 flex justify-end gap-2">
         <button className="border p-1 w-[32px]">
           <IoIosArrowBack />
         </button>
@@ -203,7 +218,7 @@ const Table = ({ transactions }) => {
         <button className="border p-1 w-[32px]">
           <IoIosArrowForward />
         </button>
-      </div>
+      </div> */}
     </>
   );
 };
