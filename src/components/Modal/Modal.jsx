@@ -103,11 +103,13 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
             </p>
             <select
               onChange={(e) => setTag(e.target.value)}
+              value={tag}
               required
               className="py-1 w-full border-b border-black"
-              name=""
-              id=""
             >
+              <option value="" disabled>
+                Select a tag
+              </option>
               {type === "income"
                 ? incomeTags.map((item, idx) => {
                     return (
@@ -130,7 +132,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
             type="submit"
             className="bg-[var(--theme)] text-white px-8 py-2 rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all w-full"
           >
-            Add Income
+            {type === "income" ? "Add Income" : "Add Expense"}
           </button>
         </form>
       </div>

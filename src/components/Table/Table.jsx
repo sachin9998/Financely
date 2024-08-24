@@ -5,7 +5,8 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 const Table = ({ transactions }) => {
   const [data, setData] = useState(transactions);
   const [search, setSearch] = useState("");
-  const [sortOption, setSortOption] = useState("All");
+  const [sortOption, setSortOption] = useState("");
+  const [selectedButton, setSelectedButton] = useState("button1");
 
   console.log(transactions);
 
@@ -41,67 +42,98 @@ const Table = ({ transactions }) => {
     setData(newData);
   };
 
-  const applySort = () => {
+  const applySort = (sortOption) => {
     let sortedData = [...transactions];
     if (sortOption === "date") {
-      sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    } else if (sortOption === "amount") {
       sortedData.sort((a, b) => a.amount - b.amount);
+    } else if (sortOption === "amount") {
+      sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
     } else if (sortOption === "noSort") {
       // Do nothing to retain original order
     }
     setData(sortedData);
   };
 
-  const handleSort = (e) => {
-    setSortOption(e.target.value);
-    applySort();
+  //   const handleSort = (e) => {
+  //     setSortOption(e.target.value);
+  //     applySort();
+  //   };
+
+  const handleClick = (buttonId, sortOption) => {
+    setSelectedButton(buttonId);
+    applySort(sortOption);
   };
 
-  useEffect(() => {}, [data, transactions]);
+  // Define styles for buttons
+  const buttonStyle = (buttonId) => ({
+    border: selectedButton === buttonId ? "1px solid #40a9ff" : "",
+    color: selectedButton === buttonId ? "#40a9ff" : "",
+    padding: "4px 8px",
+    // margin: "5px",
+    cursor: "pointer",
+  });
+
+  useEffect(() => {}, [data, sortOption]);
 
   return (
     <>
       <div className="my-2 flex justify-between items-center">
         <h2 className="text-2xl font-medium tracking-wide">My Transactions</h2>
 
-        <div className="flex items-center gap-4">
-          {/* <button className="border p-2 text-sm border-blue-500">
+        <div className="flex text-sm shadow-sm">
+          <button
+            className="border"
+            style={buttonStyle("button1")}
+            onClick={() => handleClick("button1", "noSort")}
+          >
             No Sort
           </button>
-          <button className="border p-2 text-sm">Sort By Date</button>
-          <button className="border p-2 text-sm">Sort by Amount</button> */}
+          <button
+            className="border"
+            style={buttonStyle("button2")}
+            onClick={() => handleClick("button2", "amount")}
+          >
+            Sort by Date
+          </button>
+          <button
+            className="border"
+            style={buttonStyle("button3")}
+            onClick={() => handleClick("button3", "date")}
+          >
+            Sort by Amount
+          </button>
 
-          <label className="border p-2">
+          {/* <label className="inline-block border p-2  radio-button ">
             <input
+              className=""
               type="radio"
               name="sortOption"
-              value="noSort"
-              checked={sortOption === "noSort"}
+              value=""
+              //   checked={sortOption === "noSort"}
               onChange={handleSort}
             />
-            No Sort
+            <span>No Sort</span>
           </label>
-          <label>
+          <label className="inline-block radio-button">
             <input
               type="radio"
               name="sortOption"
               value="date"
-              checked={sortOption === "date"}
+              //   checked={sortOption === "date"}
               onChange={handleSort}
             />
-            Sort By Date
+            <span>Sort By Date</span>
           </label>
-          <label>
+          <label className="inline-block radio-button">
             <input
               type="radio"
               name="sortOption"
               value="amount"
-              checked={sortOption === "amount"}
+              //   checked={sortOption === "amount"}
               onChange={handleSort}
             />
-            Sort By Amount
-          </label>
+            <span>Sort By Amount</span>
+          </label> */}
         </div>
 
         <div className="flex justify-center items-center gap-4">
@@ -148,7 +180,7 @@ const Table = ({ transactions }) => {
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="t text-gray-700">
           {data.map((item, index) => {
             return (
               <tr key={Date.now() + index} className="border-b">

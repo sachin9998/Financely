@@ -42,3 +42,27 @@ input {
     transform: rotate(1turn);
   }
 }
+
+/* .radio-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
+} */
+
+/* .radio-button input[type="radio"] {
+  display: none;
+} */
+/* background-color: #007bff; */
+/* color: white; */
+
+/* .radio-button input[type="radio"]:checked + span {
+  border: 1px solid #007bff; 
+  color: #000;
+  border: none;
+} */

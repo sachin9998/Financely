@@ -49,7 +49,7 @@ const Dashboard = () => {
   };
 
   // ===> Submitting Income Expense Entry <====
-  const submitValues = (values) => {
+  const submitValues = async (values) => {
     console.log("Value submitted", values);
 
     const newTransaction = {
@@ -62,32 +62,45 @@ const Dashboard = () => {
 
     console.log("newTransaction", newTransaction);
 
-    setTransactions([...transactions, newTransaction]);
-    setIsExpenseModalVisible(false);
-    setIsIncomeModalVisible(false);
-    addTransaction(newTransaction);
-    calculateBalance();
+    // setTransactions([...transactions, newTransaction]);
+    // setIsExpenseModalVisible(false);
+    // setIsIncomeModalVisible(false);
+    // addTransaction(newTransaction);
+    // calculateBalance();
+    try {
+      // Add transaction to Firestore
+      await addTransaction(newTransaction);
+
+      // Update local state and re-fetch transactions
+      setTransactions((prevTransactions) => [
+        ...prevTransactions,
+        newTransaction,
+      ]);
+      await fetchTransactions(); // Re-fetch transactions to ensure state sync
+
+      // Hide modals and recalculate balance
+      setIsExpenseModalVisible(false);
+      setIsIncomeModalVisible(false);
+      calculateBalance();
+
+      toast.success("Transaction Added!");
+    } catch (error) {
+      console.error("Error adding transaction: ", error);
+      toast.error("Couldn't add transaction");
+    }
   };
 
   // Adding transaction to database
-  async function addTransaction(transaction, many = false) {
+  async function addTransaction(transaction) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transactions`),
         transaction
       );
-
       console.log("Document written with ID: ", docRef.id);
-
-      if (!many) {
-        toast.success("Transaction Added!");
-      }
     } catch (e) {
       console.error("Error adding document: ", e);
-
-      if (!many) {
-        toast.error("Couldn't add transaction");
-      }
+      throw e;
     }
   }
 
@@ -125,6 +138,10 @@ const Dashboard = () => {
     setCurrentBalance(incomeTotal - expenseTotal);
   }
 
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   // Calculate the initial balance, income, and expenses
   useEffect(() => {
     calculateBalance();
@@ -133,9 +150,6 @@ const Dashboard = () => {
   const resetBalance = () => {};
 
   // getting all firebase docs
-  useEffect(() => {
-    fetchTransactions();
-  }, []);
 
   if (loading) {
     return <Loader />;
@@ -196,11 +210,9 @@ const Dashboard = () => {
             </div>
           )}
 
-
-
           {/* My Transactions */}
           <div className="flex flex-col p-8 mt-4 mb-16 box-shadow">
-              <Table transactions={transactions} />
+            <Table transactions={transactions} />
           </div>
         </div>
       </div>
