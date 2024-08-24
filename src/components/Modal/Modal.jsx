@@ -9,12 +9,7 @@ const incomeTags = [
   "Other Income",
 ];
 
-const expenseTags = [
-  "Rent",
-  "Food",
-  "Bills",
-  "Miscellaneous",
-];
+const expenseTags = ["Rent", "Food", "Bills", "Miscellaneous"];
 
 const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
   const [name, setName] = useState("");
@@ -70,6 +65,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
               type="text"
               name="name"
               value={name}
+              required
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter Details"
             />
@@ -83,8 +79,8 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
               className="outline-none py-1 border-b w-full border-black"
               onChange={(e) => setAmount(e.target.value)}
               value={amount}
+              required
               type="number"
-              name="amount"
               placeholder="Enter Amount"
             />
           </div>
@@ -96,7 +92,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
             <input
               className="outline-none py-1 border-b w-full border-gray-300"
               type="date"
-              name="name"
+              required
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
@@ -107,6 +103,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
             </p>
             <select
               onChange={(e) => setTag(e.target.value)}
+              required
               className="py-1 w-full border-b border-black"
               name=""
               id=""
@@ -126,7 +123,6 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
                       </option>
                     );
                   })}
-
             </select>
           </div>
 
