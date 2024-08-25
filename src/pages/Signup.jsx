@@ -184,16 +184,18 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center">
-      <Header />
+      <div className="px-4 sm:p-0 bg-[var(--theme)] text-[var(--white)] font-medium text-lg leading-7 w-full absolute top-0 left-0 z-50">
+        <Header />
+      </div>
       {/* <div className="h-[calc(100vh-150px)] sm:h-[calc(100vh-100px)] flex items-center justify-center font-normal"> */}
       {/* <div className="h-[90vh] flex items-center justify-center "> */}
       {loginForm ? (
-        <div className="min-w-[400px] w-[30vw] box-shadow bg-white p-8 rounded-md">
+        <div className="min-w-[325px] sm:min-w-[400px] w-[30vw] box-shadow bg-white p-5 sm:p-8 rounded-md">
           <h2 className=" font-medium text-xl text-center">
             Log In on <span className="text-[var(--theme)]">Financely.</span>
           </h2>
 
-          <div className="flex flex-col gap-4 mt-3">
+          <div className="text-sm sm:text-base flex flex-col gap-4 mt-3">
             <div>
               <p>Email</p>
               <input
@@ -223,7 +225,7 @@ const Signup = () => {
               className="bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
             >
               <MdMailOutline />
-              {loading ? "Logging In..." : "Login With Email and Password"}
+              {loading ? "Logging In..." : "Login With Email"}
             </button>
           </div>
 
@@ -232,13 +234,13 @@ const Signup = () => {
           <div className="flex flex-col gap-2">
             <button
               onClick={signInWithGoogle}
-              className="bg-[var(--theme)] text-white py-[6px] rounded border hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
+              className="text-sm sm:text-base font-medium sm:font-normal bg-[var(--theme)] text-white py-[6px] border rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
             >
               <FaGoogle className="text-sm" />
               {loading ? "Loading..." : "Login With Google"}
             </button>
 
-            <p className="text-center">
+            <p className="text-xs sm:text-base text-center">
               Or Dont Have An Account?
               <span
                 onClick={() => setLoginForm(false)}
@@ -343,7 +345,9 @@ const Signup = () => {
       )}
       {/* </div> */}
       {/* </div> */}
-      <Footer />
+      <div className=" text-sm fixed right- bottom-0 w-full sm:text-base sm:w-full bg-[var(--theme)] text-white p-3 flex items-center justify-center">
+        <Footer />
+      </div>
     </div>
   );
 };

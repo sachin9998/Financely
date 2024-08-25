@@ -25,7 +25,7 @@ const Header = () => {
   }, [user, navigate]);
 
   return (
-    <header className="px-4 sm:p-0 bg-[var(--theme)] text-[var(--white)] font-medium text-lg leading-7 w-full fixed top-0 left-0 z-50">
+    <header >
       <nav className="flex justify-between items-center max-w-screen-xl mx-auto py-3">
         {/* Logo */}
 
