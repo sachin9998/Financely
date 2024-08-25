@@ -6,11 +6,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card/Card.jsx";
-import Graph from "../components/Graph/Graph.jsx";
 import Loader from "../components/Loader/Loader";
 import Modal from "../components/Modal/Modal.jsx";
 import NoTransaction from "../components/NoTransaction/NoTransaction.jsx";
-// import PieChart from "../components/PieChart/PieChart.jsx";
 import PieChart from "../components/PieChart/PieChart.jsx";
 import Table from "../components/Table/Table.jsx";
 import { auth, db } from "../firebase";
@@ -278,7 +276,7 @@ const Dashboard = () => {
       <div className="w-full bg-[var(background-color)]">
         <div className="max-w-screen-xl mx-auto">
           {/* Cards Container */}
-          <div className="flex justify-between my-10 flex-wrap">
+          <div className="flex justify-between my-10 flex-wrap sm:items-center">
             <Card
               title={"Current Balance"}
               balance={currentBalance}
@@ -320,7 +318,7 @@ const Dashboard = () => {
             <NoTransaction />
           ) : (
             <div className="my-12 w-full flex gap-[5%] ">
-              <div className="box-shadow rounded-sm w-[60%]">
+              <div className="box-shadow rounded-sm w-[60%] p-4">
                 <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
                   Monthly Balance
                 </h2>
@@ -329,13 +327,13 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="box-shadow rounded-sm w-[35%] p-4">
+              <div className="box-shadow rounded-sm w-[35%]">
                 <div className="">
-                  <h2 className="text-xl font-medium tracking-wide">
+                  <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
                     Total Spending
                   </h2>
                 </div>
-                <div className="p-4">
+                <div className="flex items-center justify-center">
                   {/* <Pie {...config} />; */}
                   <PieChart sampleTransactions={transactions} />
                   {/* <PieChart tags={tags} amounts={amounts} /> */}

@@ -1,15 +1,14 @@
+import { ArcElement, Chart, Legend, PieController, Tooltip } from "chart.js";
 import { useEffect, useRef } from "react";
-import { Chart, PieController, ArcElement, Tooltip, Legend } from "chart.js";
 
 // Register necessary components for Chart.js
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
-const PieChart = ({sampleTransactions}) => {
+const PieChart = ({ sampleTransactions }) => {
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
 
   useEffect(() => {
-
     // Filter and Aggregate Expense Data
     const expenseData = sampleTransactions
       .filter((transaction) => transaction.type === "expense")
@@ -52,7 +51,7 @@ const PieChart = ({sampleTransactions}) => {
           tooltip: {
             callbacks: {
               label: function (tooltipItem) {
-                return `${tooltipItem.label}: $${tooltipItem.raw}`;
+                return `${tooltipItem.label}: ₹${tooltipItem.raw}`;
               },
             },
           },
@@ -69,7 +68,7 @@ const PieChart = ({sampleTransactions}) => {
   }, []);
 
   return (
-    <div>
+    <div className="w-[350px]">
       <canvas ref={chartRef} />
     </div>
   );
