@@ -13,6 +13,7 @@ import PieChart from "../components/PieChart/PieChart.jsx";
 import Table from "../components/Table/Table.jsx";
 import { auth, db } from "../firebase";
 import BarChart from "../components/BarChart/BarChart.jsx";
+import Header from "../components/Header/Header.jsx";
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -274,6 +275,7 @@ const Dashboard = () => {
   } else
     return (
       <div className="w-full bg-[var(background-color)]">
+      <Header/>
         <div className="max-w-screen-xl mx-auto">
           {/* Cards Container */}
           <div className="flex justify-between my-10 flex-wrap">

@@ -183,164 +183,166 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-screen">
+    <div className="min-h-screen relative flex flex-col items-center justify-center">
       <Header />
-      <div className="h-[calc(100vh-150px)] sm:h-[calc(100vh-100px)] flex items-center justify-center font-normal">
-        {loginForm ? (
-          <div className="min-w-[400px] w-[30vw] box-shadow bg-white p-8 rounded-md">
-            <h2 className=" font-medium text-xl text-center">
-              Log In on <span className="text-[var(--theme)]">Financely.</span>
-            </h2>
+      {/* <div className="h-[calc(100vh-150px)] sm:h-[calc(100vh-100px)] flex items-center justify-center font-normal"> */}
+      {/* <div className="h-[90vh] flex items-center justify-center "> */}
+      {loginForm ? (
+        <div className="min-w-[400px] w-[30vw] box-shadow bg-white p-8 rounded-md">
+          <h2 className=" font-medium text-xl text-center">
+            Log In on <span className="text-[var(--theme)]">Financely.</span>
+          </h2>
 
-            <div className="flex flex-col gap-4 mt-3">
-              <div>
-                <p>Email</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  type="email"
-                  name="email"
-                  placeholder="johndoe@gmail.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="">
-                <p>Password</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  type="password"
-                  name="name"
-                  placeholder="Your Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-
-              <button
-                onClick={loginWithEmail}
-                className="bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
-              >
-                <MdMailOutline />
-                {loading ? "Logging In..." : "Login With Email and Password"}
-              </button>
+          <div className="flex flex-col gap-4 mt-3">
+            <div>
+              <p>Email</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                type="email"
+                name="email"
+                placeholder="johndoe@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
-            <p className="text-center my-2 text-sm">Or</p>
-
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={signInWithGoogle}
-                className="bg-[var(--theme)] text-white py-[6px] rounded border hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
-              >
-                <FaGoogle className="text-sm" />
-                {loading ? "Loading..." : "Login With Google"}
-              </button>
-
-              <p className="text-center">
-                Or Dont Have An Account?
-                <span
-                  onClick={() => setLoginForm(false)}
-                  className="text-[var(--theme)]"
-                >
-                  {" "}
-                  Click Here
-                </span>
-              </p>
+            <div className="">
+              <p>Password</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                type="password"
+                name="name"
+                placeholder="Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
-          </div>
-        ) : (
-          <div className="min-w-[300px] sm:min-w-[400px] w-[30vw] box-shadow bg-white p-5 sm:p-8 rounded-md">
-            <h2 className=" font-medium text-lg sm:text-xl text-center">
-              Sign Up on <span className="text-[var(--theme)]">Financely.</span>
-            </h2>
 
-            <div
-              className="text-sm sm:text-base flex flex-col gap-4 mt-3 "
-              action=""
+            <button
+              onClick={loginWithEmail}
+              className="bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
             >
-              <div>
-                <p>Full Name</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div>
-                <p>Email</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                  type="email"
-                  name="email"
-                  placeholder="johndoe@gmail.com"
-                />
-              </div>
-
-              <div>
-                <p>Password</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  type="password"
-                  name="name"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Your Password"
-                />
-              </div>
-
-              <div>
-                <p>Confirm Password</p>
-                <input
-                  className="outline-none py-1 border-b w-full border-gray-300"
-                  type="password"
-                  name="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm Password"
-                />
-              </div>
-
-              <button
-                onClick={signupWithEmail}
-                className="font-medium sm:font-normal bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2 "
-                disabled={loading}
-              >
-                <MdMailOutline />{" "}
-                {loading ? "Creating User..." : "Signup Using Email"}
-              </button>
-            </div>
-
-            <p className="text-center my-2 text-sm">Or</p>
-
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={signInWithGoogle}
-                className=" text-sm sm:text-base font-medium sm:font-normal bg-[var(--theme)] text-white py-[6px] border rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
-              >
-                <FaGoogle className="text-sm" />
-                {loading ? "Loading..." : "Signup With Google"}
-              </button>
-
-              <p className="text-xs sm:text-base text-center">
-                Or Have An Account Already?{" "}
-                <span
-                  onClick={() => setLoginForm(true)}
-                  className="text-[var(--theme)]"
-                >
-                  Click Here
-                </span>
-              </p>
-            </div>
+              <MdMailOutline />
+              {loading ? "Logging In..." : "Login With Email and Password"}
+            </button>
           </div>
-        )}
-      </div>
+
+          <p className="text-center my-2 text-sm">Or</p>
+
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={signInWithGoogle}
+              className="bg-[var(--theme)] text-white py-[6px] rounded border hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
+            >
+              <FaGoogle className="text-sm" />
+              {loading ? "Loading..." : "Login With Google"}
+            </button>
+
+            <p className="text-center">
+              Or Dont Have An Account?
+              <span
+                onClick={() => setLoginForm(false)}
+                className="text-[var(--theme)]"
+              >
+                {" "}
+                Click Here
+              </span>
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="min-w-[325px] sm:min-w-[400px] w-[30vw] box-shadow bg-white p-5 sm:p-8 rounded-md">
+          <h2 className=" font-medium text-lg sm:text-xl text-center">
+            Sign Up on <span className="text-[var(--theme)]">Financely.</span>
+          </h2>
+
+          <div
+            className="text-sm sm:text-base flex flex-col gap-4 mt-3 "
+            action=""
+          >
+            <div>
+              <p>Full Name</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+              />
+            </div>
+
+            <div>
+              <p>Email</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                type="email"
+                name="email"
+                placeholder="johndoe@gmail.com"
+              />
+            </div>
+
+            <div>
+              <p>Password</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                type="password"
+                name="name"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Your Password"
+              />
+            </div>
+
+            <div>
+              <p>Confirm Password</p>
+              <input
+                className="outline-none py-1 border-b w-full border-gray-300"
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+              />
+            </div>
+
+            <button
+              onClick={signupWithEmail}
+              className="font-medium sm:font-normal bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2 "
+              disabled={loading}
+            >
+              <MdMailOutline />{" "}
+              {loading ? "Creating User..." : "Signup Using Email"}
+            </button>
+          </div>
+
+          <p className="text-center my-2 text-sm">Or</p>
+
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={signInWithGoogle}
+              className=" text-sm sm:text-base font-medium sm:font-normal bg-[var(--theme)] text-white py-[6px] border rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
+            >
+              <FaGoogle className="text-sm" />
+              {loading ? "Loading..." : "Signup With Google"}
+            </button>
+
+            <p className="text-xs sm:text-base text-center">
+              Or Have An Account Already?{" "}
+              <span
+                onClick={() => setLoginForm(true)}
+                className="text-[var(--theme)]"
+              >
+                Click Here
+              </span>
+            </p>
+          </div>
+        </div>
+      )}
+      {/* </div> */}
+      {/* </div> */}
       <Footer />
     </div>
   );
