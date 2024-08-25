@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="sm:text-base text-sm bg-[var(--theme)] text-white p-3 flex items-center justify-center">
+    <footer className="sm:text-base text-sm w-full bg-[var(--theme)] text-white p-3 flex items-center justify-center">
       <p>
         {" "}
         Created By <span className="font-medium">Sachin Alam</span> |{" "}

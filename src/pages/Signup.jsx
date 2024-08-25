@@ -9,8 +9,9 @@ import toast from "react-hot-toast";
 import { FaGoogle } from "react-icons/fa";
 import { MdMailOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { auth, db, provider } from "../firebase";
 import Footer from "../components/Footer/Footer";
+import Header from "../components/Header/Header";
+import { auth, db, provider } from "../firebase";
 
 const getErrorMessage = (error) => {
   switch (error.code) {
@@ -40,7 +41,6 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
 
   const loginWithEmail = (event) => {
     event.preventDefault();
@@ -183,15 +183,16 @@ const Signup = () => {
   };
 
   return (
-    <div className="w-full">
-      <div className="h-[90vh] flex items-center justify-center font-normal">
+    <div className="h-screen">
+      <Header />
+      <div className="h-[calc(100vh-150px)] sm:h-[calc(100vh-100px)] flex items-center justify-center font-normal">
         {loginForm ? (
           <div className="min-w-[400px] w-[30vw] box-shadow bg-white p-8 rounded-md">
             <h2 className=" font-medium text-xl text-center">
               Log In on <span className="text-[var(--theme)]">Financely.</span>
             </h2>
 
-            <form className="flex flex-col gap-4 mt-3 " action="">
+            <div className="flex flex-col gap-4 mt-3">
               <div>
                 <p>Email</p>
                 <input
@@ -223,7 +224,7 @@ const Signup = () => {
                 <MdMailOutline />
                 {loading ? "Logging In..." : "Login With Email and Password"}
               </button>
-            </form>
+            </div>
 
             <p className="text-center my-2 text-sm">Or</p>
 
@@ -249,12 +250,15 @@ const Signup = () => {
             </div>
           </div>
         ) : (
-          <div className="min-w-[400px] w-[35vw] box-shadow bg-white p-8 rounded-md">
-            <h2 className=" font-medium text-xl text-center">
+          <div className="min-w-[300px] sm:min-w-[400px] w-[30vw] box-shadow bg-white p-5 sm:p-8 rounded-md">
+            <h2 className=" font-medium text-lg sm:text-xl text-center">
               Sign Up on <span className="text-[var(--theme)]">Financely.</span>
             </h2>
 
-            <div className="flex flex-col gap-4 mt-3 " action="">
+            <div
+              className="text-sm sm:text-base flex flex-col gap-4 mt-3 "
+              action=""
+            >
               <div>
                 <p>Full Name</p>
                 <input
@@ -305,13 +309,11 @@ const Signup = () => {
 
               <button
                 onClick={signupWithEmail}
-                className="bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
+                className="font-medium sm:font-normal bg-white text-[var(--theme)] py-[6px] rounded border border-[var(--theme)] hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2 "
                 disabled={loading}
               >
                 <MdMailOutline />{" "}
-                {loading
-                  ? "Creating User..."
-                  : "Signup With Email and Password"}
+                {loading ? "Creating User..." : "Signup Using Email"}
               </button>
             </div>
 
@@ -320,13 +322,13 @@ const Signup = () => {
             <div className="flex flex-col gap-2">
               <button
                 onClick={signInWithGoogle}
-                className="bg-[var(--theme)] text-white py-[6px] border rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
+                className=" text-sm sm:text-base font-medium sm:font-normal bg-[var(--theme)] text-white py-[6px] border rounded hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all flex justify-center items-center gap-2"
               >
                 <FaGoogle className="text-sm" />
                 {loading ? "Loading..." : "Signup With Google"}
               </button>
 
-              <p className="text-center">
+              <p className="text-xs sm:text-base text-center">
                 Or Have An Account Already?{" "}
                 <span
                   onClick={() => setLoginForm(true)}
@@ -339,6 +341,7 @@ const Signup = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

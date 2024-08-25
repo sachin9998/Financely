@@ -276,7 +276,7 @@ const Dashboard = () => {
       <div className="w-full bg-[var(background-color)]">
         <div className="max-w-screen-xl mx-auto">
           {/* Cards Container */}
-          <div className="flex justify-between my-10 flex-wrap sm:items-center">
+          <div className="flex justify-between my-10 flex-wrap">
             <Card
               title={"Current Balance"}
               balance={currentBalance}
