@@ -1,5 +1,5 @@
 import { ArcElement, Chart, Legend, PieController, Tooltip } from "chart.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Register necessary components for Chart.js
 Chart.register(PieController, ArcElement, Tooltip, Legend);
@@ -7,6 +7,7 @@ Chart.register(PieController, ArcElement, Tooltip, Legend);
 const PieChart = ({ sampleTransactions }) => {
   const chartRef = useRef(null);
   const chartInstanceRef = useRef(null);
+  const [spend, setSpend] = useState(false);
 
   useEffect(() => {
     // Filter and Aggregate Expense Data
@@ -24,6 +25,13 @@ const PieChart = ({ sampleTransactions }) => {
     // Extract Labels and Data for the Pie Chart
     const labels = Object.keys(expenseData);
     const data = Object.values(expenseData);
+
+    if (data.length === 0) {
+      setSpend(true); // No expenses, show "Spend Something"
+      return;
+    } else {
+      setSpend(false); // Expenses exist, show the chart
+    }
 
     // Cleanup previous chart instance
     if (chartInstanceRef.current) {
@@ -68,8 +76,14 @@ const PieChart = ({ sampleTransactions }) => {
   }, []);
 
   return (
-    <div className="w-[350px]">
-      <canvas ref={chartRef} />
+    <div className="sm:w-[350px] w-[50vw]">
+      {spend ? (
+        <div className="text-center text-sm sm:text-lg font-normal h-full">
+          <p>Seems like you haven't spent anything till now... </p>
+        </div>
+      ) : (
+        <canvas ref={chartRef} />
+      )}
     </div>
   );
 };

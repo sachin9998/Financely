@@ -26,10 +26,9 @@ const Header = () => {
 
   return (
     <header >
-      <nav className="flex justify-between items-center max-w-screen-xl mx-auto py-3">
+      <nav className="flex justify-between items-center max-w-screen-xl mx-auto py-3 px-4">
         {/* Logo */}
-
-        <div>
+        <div className="">
           <p>Financely.</p>
         </div>
 

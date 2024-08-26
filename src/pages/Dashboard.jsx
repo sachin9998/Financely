@@ -1,19 +1,27 @@
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import moment from "moment";
 import { parse } from "papaparse";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import BarChart from "../components/BarChart/BarChart.jsx";
 import Card from "../components/Card/Card.jsx";
+import Footer from "../components/Footer/Footer";
+import Header from "../components/Header/Header.jsx";
 import Loader from "../components/Loader/Loader";
 import Modal from "../components/Modal/Modal.jsx";
 import NoTransaction from "../components/NoTransaction/NoTransaction.jsx";
 import PieChart from "../components/PieChart/PieChart.jsx";
 import Table from "../components/Table/Table.jsx";
 import { auth, db } from "../firebase";
-import BarChart from "../components/BarChart/BarChart.jsx";
-import Header from "../components/Header/Header.jsx";
 
 const Dashboard = () => {
   const [transactions, setTransactions] = useState([]);
@@ -201,7 +209,9 @@ const Dashboard = () => {
   //   colorField: "category",
   // };
 
-  const resetBalance = () => {};
+  const resetBalance = () => {
+    toast.success("Coming Soon!");
+  };
 
   const importFromCSV = (event) => {
     event.preventDefault();
@@ -271,29 +281,39 @@ const Dashboard = () => {
     interactions: [{ type: "element-active" }],
   };
   if (loading) {
-    return <Loader />;
+    return (
+      <>
+        <div className="sm:p-0 bg-[var(--theme)] text-[var(--white)] font-medium text-lg leading-7 w-full sticky top-0 left-0 z-50">
+          <Header />
+        </div>
+        <Loader />;
+      </>
+    );
   } else
     return (
       <div className="w-full bg-[var(background-color)]">
-      <Header/>
+        <div className="sm:p-0 bg-[var(--theme)] text-[var(--white)] font-medium text-lg leading-7 w-full sticky top-0 left-0 z-50">
+          <Header />
+        </div>
         <div className="max-w-screen-xl mx-auto">
           {/* Cards Container */}
-          <div className="flex justify-between my-10 flex-wrap">
+          <div className="flex justify-center items-center my-10 flex-wrap gap-4 sm:justify-between">
             <Card
               title={"Current Balance"}
               balance={currentBalance}
               btnText={"Reset Balance"}
+              performAction={resetBalance}
             />
             <Card
               title={"Total Income"}
               btnText={"Add Income"}
-              openModal={showIncomeModal}
+              performAction={showIncomeModal}
               balance={income}
             />
             <Card
               title={"Total Expenses"}
               btnText={"Add Expense"}
-              openModal={showExpenseModal}
+              performAction={showExpenseModal}
               balance={expense}
             />
           </div>
@@ -319,8 +339,9 @@ const Dashboard = () => {
           {transactions.length === 0 ? (
             <NoTransaction />
           ) : (
-            <div className="my-12 w-full flex gap-[5%] ">
-              <div className="box-shadow rounded-sm w-[60%] p-4">
+            <div className="sm:my-12 flex flex-col gap-5 sm:flex sm:h-[450px] sm:flex-row sm:items-center sm:gap-[5%]">
+              {/* <div className="my-12 w-full flex flex-col justify-center items-center h-full sm:flex-row sm:gap-[5%] "> */}
+              <div className=" box-shadow rounded-sm sm:w-[60%] p-2 mx-4 sm:mx-0 h-auto sm:h-full">
                 <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
                   Monthly Balance
                 </h2>
@@ -329,25 +350,26 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="box-shadow rounded-sm w-[35%]">
-                <div className="">
-                  <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
-                    Total Spending
-                  </h2>
-                </div>
+              <div className="box-shadow rounded-sm sm:w-[35%] sm:h-full p-2 mx-4 sm:mx-0">
+                {/* <div className=""> */}
+                <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
+                  Total Spending
+                </h2>
+                {/* </div> */}
                 <div className="flex items-center justify-center">
-                  {/* <Pie {...config} />; */}
                   <PieChart sampleTransactions={transactions} />
-                  {/* <PieChart tags={tags} amounts={amounts} /> */}
                 </div>
               </div>
             </div>
           )}
 
           {/* My Transactions */}
-          <div className="flex flex-col p-8 mt-4 mb-16 box-shadow">
+          <div className="flex flex-col m-4 sm:mx-0 md:p-8 mt-5 mb-16 box-shadow rounded-sm">
             <Table importFromCSV={importFromCSV} transactions={transactions} />
           </div>
+        </div>
+        <div className="text-sm right- bottom-0 w-full sm:text-base sm:w-full bg-[var(--theme)] text-white p-3 flex items-center justify-center">
+          <Footer />
         </div>
       </div>
     );

@@ -1,31 +1,19 @@
 import { unparse } from "papaparse";
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
-// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-// const [query, setQuery] =useState("");
 
 const Table = ({ transactions, importFromCSV }) => {
   const [data, setData] = useState(transactions);
   const [search, setSearch] = useState("");
-  //   const [sortOption, setSortOption] = useState("");
   const [selectedButton, setSelectedButton] = useState("button1");
 
-  console.log(transactions);
-
   const handleSearch = (e) => {
-    // const query = e.target.value.toLowerCase();
-    const q = e.target.value;
-    setSearch(q);
-
-    const query = q.toLowerCase();
-
-    // const searchData = data.filter((item) =>
-    //   item.name.toLowerCase().includes(query)
-    // );
+    const query = e.target.value.toLowerCase();
+    setSearch(query);
 
     if (query !== "") {
       const searchData = data.filter((item) =>
-        item.name.toLowerCase().includes(query.toLowerCase())
+        item.name.toLowerCase().includes(query)
       );
       setData(searchData);
     } else {
@@ -52,28 +40,19 @@ const Table = ({ transactions, importFromCSV }) => {
       sortedData.sort((a, b) => a.amount - b.amount);
     } else if (sortOption === "amount") {
       sortedData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    } else if (sortOption === "noSort") {
-      // Do nothing to retain original order
     }
     setData(sortedData);
   };
-
-  //   const handleSort = (e) => {
-  //     setSortOption(e.target.value);
-  //     applySort();
-  //   };
 
   const handleClick = (buttonId, sortOption) => {
     setSelectedButton(buttonId);
     applySort(sortOption);
   };
 
-  // Define styles for buttons
   const buttonStyle = (buttonId) => ({
     border: selectedButton === buttonId ? "1px solid #40a9ff" : "",
     color: selectedButton === buttonId ? "#40a9ff" : "",
     padding: "4px 8px",
-    // margin: "5px",
     cursor: "pointer",
   });
 
@@ -96,9 +75,10 @@ const Table = ({ transactions, importFromCSV }) => {
 
   return (
     <>
-      <div className="my-2 flex justify-between items-center">
-        <h2 className="text-2xl font-medium tracking-wide">My Transactions</h2>
-
+      <div className="my-2 flex flex-col sm:flex-row gap-5 justify-between items-center">
+        <h2 className=" text-xl md:text-2xl font-medium tracking-wide py-2">
+          My Transactions
+        </h2>
         <div className="flex text-sm shadow-sm">
           <button
             className="border"
@@ -123,27 +103,21 @@ const Table = ({ transactions, importFromCSV }) => {
           </button>
         </div>
 
-        <div className="flex justify-center items-center gap-4">
+        <div className="flex sm:justify-center justify-evenly items-center gap-4 text-sm font-normal">
           <button
             onClick={exportToCSV}
-            className="border border-[var(--theme)] text-[var(--theme)] px-8 py-2 rounded hover:bg-[var(--theme)] hover:text-white hover:border transition-all"
+            className="border border-[var(--theme)] text-[var(--theme)] px-3 sm:px-8 py-1 sm:py-2 rounded hover:bg-[var(--theme)] hover:text-white hover:border transition-all"
           >
             Export to CSV
           </button>
-
-          {/* <button
-            onClick={importFromCSV}
-            className="bg-[var(--theme)] text-white px-8 py-2 rounded border border-transparent hover:bg-white hover:text-[var(--theme)] hover:border hover:border-[var(--theme)] transition-all"
-          ></button> */}
-
           <label
             htmlFor="file-csv"
-            className="inline-flex border border-[var(--theme)] text-white bg-[var(--theme)] px-8 py-2 rounded hover:text-[var(--theme)] hover:bg-white transition-all"
+            className="inline-flex border border-[var(--theme)] text-white bg-[var(--theme)] px-3 sm:px-8 py-1 sm:py-2 rounded hover:text-[var(--theme)] hover:bg-white transition-all"
           >
             Import from CSV
           </label>
           <input
-            className=" hidden"
+            className="hidden"
             type="file"
             id="file-csv"
             accept=".csv"
@@ -153,21 +127,24 @@ const Table = ({ transactions, importFromCSV }) => {
         </div>
       </div>
 
-      <div className="w-full my-8 flex items-center justify-center gap-6 text-sm">
-        <div className="flex-1 box-shadow flex gap-4 items-center space-between px-3 py-2 rounded-md outline-none border-none">
-          <FiSearch className="" />
+      {/* Search Section */}
+      <div className="w-full my-3 md:my-8 flex items-center justify-center gap-1 sm:gap-6 text-sm">
+        <div className="flex-1 box-shadow flex gap-4 items-center px-2 py-1 md:px-3 md:py-2 mx-2 md:mx-0 rounded-md outline-none border-none">
+          <FiSearch />
           <input
             className="w-full border-none outline-none"
             type="text"
             placeholder="Search by Name"
             value={search}
             onChange={handleSearch}
-            // onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
-        <div className="box-shadow w-[20%] py-2 px-3 rounded-md">
-          <select className="w-full" onChange={(e) => handleFilterBtn(e)}>
+        <div className="box-shadow sm:w-[20%] mx-2 md:mx-0 px-2 py-1 md:px-3 md:py-2 rounded-md">
+          <select
+            className="w-full bg-transparent text-xs md:text-sm"
+            onChange={(e) => handleFilterBtn(e)}
+          >
             <option value="all">All</option>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
@@ -175,50 +152,76 @@ const Table = ({ transactions, importFromCSV }) => {
         </div>
       </div>
 
-      <table className="auto min-w-full">
+      {/* <div className="overflow-auto hidden sm:block">
+        <table className="w-full text-start text-xs md:text-sm sm:text-[14px]">
+          <thead className="border">
+            <tr className="">
+              <th className="px-2 py-2 md:py-4 text">Name</th>
+              <th className="px-2 py-2 md:py-4">Type</th>
+              <th className="px-2 py-2 md:py-4">Date</th>
+              <th className="px-2 py-2 md:py-4">Amount</th>
+              <th className="px-2 py-2 md:py-4 hidden">Tag</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-gray-700">
+            {data.length === 0 && (
+              <tr className="border">
+                <td className="text-center font-medium" colSpan={5}>
+                  No Transactions Found
+                </td>
+              </tr>
+            )}
+
+            {data.map((item, index) => (
+              <tr key={index} className="border-b">
+                <td className="px-2 py-2  md:py-4 text-xs md:text-sm">
+                  {item.name}
+                </td>
+                <td className="px-2 py-2  md:py-4 text-xs md:text-sm whitespace-nowrap">
+                  {item.type}
+                </td>
+                <td className="px-2 py-2  md:py-4 text-[9px] md:text-sm whitespace-nowrap">
+                  {item.date}
+                </td>
+                <td className="px-2 py-2  md:py-4 text-xs md:text-sm whitespace-nowrap">
+                  ₹{item.amount}
+                </td>
+                <td className="px-2 py-2  md:py-4 text-xs md:text-sm hidden whitespace-nowrap">
+                  {item.tag}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div> */}
+
+      <table className="mt-5 md:mt-2 w-full table-auto text-xs md:text-sm md:tracking-wide">
         <thead>
           <tr className="border">
-            <th>Name</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Tag</th>
+            <th className="px-2 py-2 md:py-4 text-left ">Name</th>
+            <th className="px-2 py-2 md:py-4 text-left">Type</th>
+            <th className="px-2 py-2 md:py-4 text-left">Date</th>
+            <th className="px-2 py-2 md:py-4 text-left">Amount</th>
+            <th className="px-2 py-2 md:py-4 text-left hidden">Tag</th>
           </tr>
         </thead>
-
-        <tbody className="t text-gray-700">
-          {data.length === 0 && (
-            <tr className="border">
-              <td className="text-center font-medium" colSpan={5}>
-                No Transactions Found
-              </td>
-            </tr>
-          )}
-
+        <tbody>
           {data.map((item, index) => {
             return (
-              <tr key={Date.now() + index} className="border-b">
-                <td>{item.name}</td>
-                <td>{item.type}</td>
-                <td>{item.date}</td>
-                <td>₹{item.amount}</td>
-                <td>{item.tag}</td>
+              <tr className="border-b" key={Date.now() + index}>
+                <td className="px-2 py-2 text-gray-700 md:py-4">{item.name}</td>
+                <td className="px-2 py-2 text-gray-700">{item.type}</td>
+                <td className="px-2 py-2 text-gray-700 whitespace-nowrap">
+                  {item.date}
+                </td>
+                <td className="px-2 py-2 text-gray-700">₹{item.amount}</td>
+                <td className="px-2 py-2 text-gray-700 hidden">{item.tag}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
-
-      {/* For Future use: Pagination */}
-      {/* <div className="mt-5 flex justify-end gap-2">
-        <button className="border p-1 w-[32px]">
-          <IoIosArrowBack />
-        </button>
-        <button className="border border-[var(--theme)] p-1 w-[32px]">1</button>
-        <button className="border p-1 w-[32px]">
-          <IoIosArrowForward />
-        </button>
-      </div> */}
     </>
   );
 };
