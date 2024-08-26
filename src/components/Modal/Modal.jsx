@@ -36,7 +36,7 @@ const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
 
   return (
     <div
-      className="text-sm fixed top-0 left-0 right-0 bottom-0 backdrop-brightness-90 bg-transparent flex items-center justify-center z-[1000]"
+      className="text-sm fixed top-0 left-0 right-0 bottom-0 backdrop-brightness-90 bg-transparent flex items-center justify-center z-[1000] p-5 md:p-0"
       onClick={closeModal}
     >
       <div
