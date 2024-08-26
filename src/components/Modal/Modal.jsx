@@ -13,7 +13,7 @@ const expenseTags = ["Rent", "Food", "Bills", "Miscellaneous"];
 
 const Modal = ({ title, isModalOpen, closeModal, submitValues, type }) => {
   const [name, setName] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
   const [date, setDate] = useState(Date.now());
   const [tag, setTag] = useState("");
   // const type = type;
