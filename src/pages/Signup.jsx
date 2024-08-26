@@ -187,8 +187,7 @@ const Signup = () => {
       <div className="px-4 sm:p-0 bg-[var(--theme)] text-[var(--white)] font-medium text-lg leading-7 w-full absolute top-0 left-0 z-50">
         <Header />
       </div>
-      {/* <div className="h-[calc(100vh-150px)] sm:h-[calc(100vh-100px)] flex items-center justify-center font-normal"> */}
-      {/* <div className="h-[90vh] flex items-center justify-center "> */}
+
       {loginForm ? (
         <div className="min-w-[325px] sm:min-w-[400px] w-[30vw] box-shadow bg-white p-5 sm:p-8 rounded-md">
           <h2 className=" font-medium text-xl text-center">
@@ -244,7 +243,7 @@ const Signup = () => {
               Or Dont Have An Account?
               <span
                 onClick={() => setLoginForm(false)}
-                className="text-[var(--theme)]"
+                className="text-[var(--theme)] cursor-pointer"
               >
                 {" "}
                 Click Here
@@ -335,7 +334,7 @@ const Signup = () => {
               Or Have An Account Already?{" "}
               <span
                 onClick={() => setLoginForm(true)}
-                className="text-[var(--theme)]"
+                className="text-[var(--theme)] cursor-pointer"
               >
                 Click Here
               </span>
@@ -343,8 +342,7 @@ const Signup = () => {
           </div>
         </div>
       )}
-      {/* </div> */}
-      {/* </div> */}
+
       <div className="text-sm fixed right-0 bottom-0 w-full sm:text-base sm:w-full bg-[var(--theme)] text-white p-3 flex items-center justify-center">
         <Footer />
       </div>

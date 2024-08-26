@@ -1,8 +1,6 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
-  doc,
   getDocs,
   query,
 } from "firebase/firestore";
@@ -71,11 +69,6 @@ const Dashboard = () => {
 
     console.log("newTransaction", newTransaction);
 
-    // setTransactions([...transactions, newTransaction]);
-    // setIsExpenseModalVisible(false);
-    // setIsIncomeModalVisible(false);
-    // addTransaction(newTransaction);
-    // calculateBalance();
     try {
       // Add transaction to Firestore
       await addTransaction(newTransaction);
@@ -156,58 +149,6 @@ const Dashboard = () => {
     calculateBalance();
   }, [transactions]);
 
-  // const processChartData = () => {
-  //   const balanceData = [];
-  //   const spendingData = {};
-
-  //   transactions.forEach((transaction) => {
-  //     const monthYear = moment(transaction.date).format("MMM YYYY");
-  //     const tag = transaction.tag;
-
-  //     if (transaction.type === "income") {
-  //       if (balanceData.some((data) => data.month === monthYear)) {
-  //         balanceData.find((data) => data.month === monthYear).balance +=
-  //           transaction.amount;
-  //       } else {
-  //         balanceData.push({ month: monthYear, balance: transaction.amount });
-  //       }
-  //     } else {
-  //       if (balanceData.some((data) => data.month === monthYear)) {
-  //         balanceData.find((data) => data.month === monthYear).balance -=
-  //           transaction.amount;
-  //       } else {
-  //         balanceData.push({ month: monthYear, balance: -transaction.amount });
-  //       }
-
-  //       if (spendingData[tag]) {
-  //         spendingData[tag] += transaction.amount;
-  //       } else {
-  //         spendingData[tag] = transaction.amount;
-  //       }
-  //     }
-  //   });
-
-  //   const spendingDataArray = Object.keys(spendingData).map((key) => ({
-  //     category: key,
-  //     value: spendingData[key],
-  //   }));
-
-  //   return { balanceData, spendingDataArray };
-  // };
-
-  // const { balanceData, spendingDataArray } = processChartData();
-
-  // const balanceConfig = {
-  //   data: balanceData,
-  //   xField: "month",
-  //   yField: "balance",
-  // };
-
-  // const spendingConfig = {
-  //   data: spendingDataArray,
-  //   angleField: "value",
-  //   colorField: "category",
-  // };
 
   const resetBalance = () => {
     toast.success("Coming Soon!");
@@ -280,6 +221,7 @@ const Dashboard = () => {
     },
     interactions: [{ type: "element-active" }],
   };
+
   if (loading) {
     return (
       <>
@@ -340,7 +282,7 @@ const Dashboard = () => {
             <NoTransaction />
           ) : (
             <div className="sm:my-12 flex flex-col gap-5 sm:flex sm:h-[450px] sm:flex-row sm:items-center sm:gap-[5%]">
-              {/* <div className="my-12 w-full flex flex-col justify-center items-center h-full sm:flex-row sm:gap-[5%] "> */}
+ 
               <div className=" box-shadow rounded-sm sm:w-[60%] p-2 mx-4 sm:mx-0 h-auto sm:h-full">
                 <h2 className="mx-6 my-4 text-xl font-medium tracking-wide">
                   Monthly Balance
