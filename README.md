@@ -86,26 +86,6 @@ The Personal Finance Tracker is a web application designed to help users manage 
    http://localhost:3000
    ```
 
-## 📂 Project Structure
-
-```plaintext
-movieo/
-├── public/
-│   ├── index.html
-│   └── ...
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── features/
-│   ├── pages/
-│   ├── redux/
-│   ├── App.js
-│   └── index.js
-├── .env
-├── package.json
-└── README.md
-```
-
 ## 📝 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
